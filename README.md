@@ -11,11 +11,27 @@ Malgré la simplicité de ses règles, le système peut produire des comportemen
 ## Règles du jeu
 Chaque cellule possède huit voisines : horizontalement, verticalement et en diagonale.
 
+<img src="https://images.openai.com/static-rsc-4/17_wf7th9Q95eaDnDgZezQXPlfYFTjQWcweZe2WgmD7K_NM0SIGshtDMHl8e5pAXF0lWExqua41BLWUVI_DprURF2zWySdGHJ03eA9rBEikMGTSxMS7luNzsmyJB4fZW9Vjg1xctha8cHdAYYsgU3uAnJdBycsyK6Sn4s8bo7R0?purpose=inline" alt="Lab 09: Conway’s Game of Life | CS 61B Fall 2024" style="width: 40%;">
+
 À chaque génération, son état est déterminé selon les règles suivantes :
-1. **Naissance** : une cellule morte possédant exactement trois voisines vivantes devient vivante.
-2. **Survie** : une cellule vivante possédant deux ou trois voisines vivantes reste vivante.
-3. **Sous-population** : une cellule vivante possédant moins de deux voisines vivantes meurt.
-4. **Surpopulation** : une cellule vivante possédant plus de trois voisines vivantes meurt.
+| État actuel | Voisines vivantes | Nouvel état |
+| ----------- | ----------------- | ----------- |
+| Morte       | 0, 1 ou 2         | Morte       |
+| Morte       | **3**             | **Vivante** |
+| Morte       | 4 à 8             | Morte       |
+| Vivante     | 0 ou 1            | Morte       |
+| Vivante     | **2 ou 3**        | **Vivante** |
+| Vivante     | 4 à 8             | Morte       |
+
+### **Pourquoi ces règles ?**
+
+On leur donne généralement quatre noms :
+
+1. **Naissance** : une cellule morte avec exactement 3 voisines vivantes devient vivante.
+2. **Survie** : une cellule vivante avec 2 ou 3 voisines vivantes reste vivante.
+3. **Sous-population** : une cellule vivante avec moins de 2 voisines vivantes meurt.
+4. **Surpopulation** : une cellule vivante avec plus de 3 voisines vivantes meurt.
+
 
 Toutes les cellules évoluent simultanément.
 
