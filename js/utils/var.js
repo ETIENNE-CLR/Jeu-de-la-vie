@@ -28,6 +28,7 @@ export const KEYS_INPUT = {};
 export const KEYS_PREVIOUS = {};
 
 export function isKeyPressedOnce(key) {
+    key = key.toUpperCase();
     const pressed = KEYS_INPUT[key];
     ResetKeysInputValue(key);
     return pressed;

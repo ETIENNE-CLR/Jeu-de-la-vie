@@ -1,12 +1,13 @@
 import { screenSize } from "../../game.js";
 import { posInsideGrid } from "../../utils/env.js";
-import { KEYS_INPUT } from "../../utils/var.js";
+import { isKeyPressedOnce, KEYS_INPUT } from "../../utils/var.js";
 import { Tile } from "../config/Tile.js";
 import { Vector2 } from "../config/Vector2.js";
 import { AbstractViewScreen } from "./AbstractViewScreen.js";
 
 const RESOLUTION = 340;
-const TIMEOUT_MS = 125;
+const TIMEOUT_RESET = 125;
+let TIMEOUT_MS = TIMEOUT_RESET;
 
 /**
  * Classe représentant l'écran de jeu principal.
@@ -25,6 +26,12 @@ export class Main extends AbstractViewScreen {
      * @type {number}
      */
     #elapsedTime;
+
+    /**
+     * Dit si le jeu est en pause ou pas
+     * @type {boolean}
+     */
+    #on_pause;
 
     /**
      * Retourne les coordonnées maximales
@@ -73,6 +80,11 @@ export class Main extends AbstractViewScreen {
     async loadContent() { }
 
     update(deltaTime) {
+        // Pause
+        if (isKeyPressedOnce(' ')) {
+            this.#on_pause = !this.#on_pause;
+        }
+        if (this.#on_pause) return;
 
         // Timer
         this.#elapsedTime += deltaTime;
@@ -80,9 +92,10 @@ export class Main extends AbstractViewScreen {
             return;
         this.#elapsedTime -= TIMEOUT_MS;
 
-        // Reset
-        if (KEYS_INPUT[' ']) {
-            this.#genGrid();
+        // Commandes
+        if (this.#keysListener()) {
+            this.#elapsedTime = 0;
+            // return;
         }
 
         // Parcourir chaque cellule
@@ -130,6 +143,39 @@ export class Main extends AbstractViewScreen {
 
         // Remplacer la grille par la nouvelle génération
         this.#grid = nextGrid;
+    }
+
+    #keysListener() {
+        let value = 30;
+        
+        // Modifier la vitesse
+        if (isKeyPressedOnce('ArrowLeft')) {
+            // Ralentir
+            TIMEOUT_MS = Math.min(1000, TIMEOUT_MS + value);
+            return true;
+        }
+        if (isKeyPressedOnce('ArrowRight')) {
+            // Accélérer
+            TIMEOUT_MS = Math.max(5, TIMEOUT_MS - value);
+            return true;
+        }
+        if (isKeyPressedOnce('ArrowDown')) {
+            // reset la vitesse
+            TIMEOUT_MS = TIMEOUT_RESET;
+            return true;
+        }
+
+        // Controle
+        if (isKeyPressedOnce('r')) {
+            // Reset la génération
+            this.#genGrid();
+            return true;
+        }
+        if (isKeyPressedOnce('i')) {
+            // afficher la vitesse
+            console.log(TIMEOUT_MS);
+            return true;
+        }
     }
 
     draw(ctx) {
