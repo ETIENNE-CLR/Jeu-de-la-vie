@@ -53,7 +53,7 @@ export class Tile {
         this.x = x;
         this.y = y;
         this.length = length;
-        this.dead = true;
+        this.dead = Math.random() < 0.275;
     }
 
     /**

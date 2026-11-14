@@ -1,10 +1,12 @@
 import { screenSize } from "../../game.js";
+import { posInsideGrid } from "../../utils/env.js";
+import { KEYS_INPUT } from "../../utils/var.js";
 import { Tile } from "../config/Tile.js";
 import { Vector2 } from "../config/Vector2.js";
 import { AbstractViewScreen } from "./AbstractViewScreen.js";
 
-const RESOLUTION = 75;
-const TIMEOUT_MS = 1000;
+const RESOLUTION = 340;
+const TIMEOUT_MS = 125;
 
 /**
  * Classe représentant l'écran de jeu principal.
@@ -45,13 +47,20 @@ export class Main extends AbstractViewScreen {
 
     constructor() {
         super();
+        this.#elapsedTime = 0;
+        this.#genGrid();
+    }
 
-        // Création de la grille de jeu
+    /**
+     * Reset la grille, elle permet de repartir à 0
+     * et sélectionne aléatoirement des cellules vivantes
+     */
+    #genGrid() {
         this.#grid = [];
-        for (let x = 0; x < this.MAX_X; x++) {
+        for (let x = 0; x < this.MAX.X; x++) {
             this.#grid[x] = [];
 
-            for (let y = 0; y < this.MAX_Y; y++) {
+            for (let y = 0; y < this.MAX.Y; y++) {
                 this.#grid[x][y] = new Tile(
                     x * this.TILE_SIZE,
                     y * this.TILE_SIZE,
@@ -59,13 +68,6 @@ export class Main extends AbstractViewScreen {
                 );
             }
         }
-    }
-
-    /**
-     * Génère une grille adapté à l'écran (taille du caneva)
-     * (écrase `this.#grid`)
-     */
-    #genGrid() {
     }
 
     async loadContent() { }
