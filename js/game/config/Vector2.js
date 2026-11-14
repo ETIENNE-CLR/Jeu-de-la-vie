@@ -6,12 +6,12 @@ export class Vector2 {
     /**
      * La coordonnée X du vecteur.
      */
-    x;
+    X;
 
     /**
      * La coordonnée Y du vecteur.
      */
-    y;
+    Y;
 
     /**
      * Renvoie un vecteur nul (0, 0).
@@ -27,8 +27,8 @@ export class Vector2 {
      * @param {number} y coordonée y
      */
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        this.X = x;
+        this.Y = y;
     }
 
     /**
@@ -37,8 +37,8 @@ export class Vector2 {
      */
     toJson() {
         return {
-            x: this.x,
-            y: this.y
+            X: this.X,
+            Y: this.Y
         }
     }
 
@@ -48,6 +48,6 @@ export class Vector2 {
      * @returns {Vector2} L'instance de Vector2 créée
      */
     static fromJson(json) {
-        return new Vector2(json.x, json.y);
+        return new Vector2(json.X, json.Y);
     }
 }
