@@ -1,5 +1,3 @@
-import { Camera } from "../env/Camera.js";
-
 /**
  * Classe abstraite représentant un élément de jeu.
  * Toutes les classes de jeu doivent hériter de cette classe.
@@ -29,16 +27,6 @@ export class AbstractGameElementInterface {
      * @throws {Error} Si la méthode n'est pas implémentée
      */
     draw(ctx) {
-        throw new Error("Méthode Draw non implémentée.");
-    }
-
-    /**
-     * Méthode pour dessiner l'élément de jeu.
-     * @param {CanvasRenderingContext2D} ctx Le contexte de rendu du canvas
-     * @param {Camera} camera La camera qui observe l'élement
-     * @throws {Error} Si la méthode n'est pas implémentée
-     */
-    draw(ctx, camera) {
         throw new Error("Méthode Draw non implémentée.");
     }
 }
