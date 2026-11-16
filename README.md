@@ -8,6 +8,13 @@ Il s'agit d'un jeu sans joueur : son évolution est entièrement déterminée pa
 
 Malgré la simplicité de ses règles, le système peut produire des comportements complexes et des motifs surprenants.
 
+## Exemples
+<img src="img/game-of-life.gif">
+<img src="img/août-01-2015-2330.gif">
+<p style="text-align: center; margin-bottom: 4%;">Jeu de la vie</p>
+<img src="img/Gospers_glider_gun.gif">
+<p style="text-align: center; margin-bottom: 4%;">Gospers glider gun (canons à planeurs)</p>
+
 ## Règles du jeu
 Chaque cellule possède huit voisines : horizontalement, verticalement et en diagonale.
 
@@ -42,12 +49,12 @@ Toutes les cellules évoluent simultanément.
 ## Fonctionnalités
 - [x] Génération d'une grille adaptée à la taille de l'écran.
 - [x] Résolution configurable.
-- [ ] Calcul des générations.
-- [ ] Simulation en temps réel.
-- [ ] Contrôle de la simulation (lecture et pause).
+- [x] Calcul des générations.
+- [x] Simulation en temps réel.
+- [x] Contrôle de la simulation (lecture et pause).
 - [ ] Modification manuelle de l'état des cellules.
-- [ ] Réinitialisation de la grille.
-- [ ] Gestion de la vitesse de simulation.
+- [x] Réinitialisation de la grille.
+- [x] Gestion de la vitesse de simulation.
 
 
 ## Lancement du projet
