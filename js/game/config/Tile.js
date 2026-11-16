@@ -1,3 +1,5 @@
+import { FILL_RATE } from "../../utils/var.js";
+
 /**
  * Classe représentant un rectangle.
  * Elle sert principalement pour la gestion des collisions.
@@ -53,7 +55,7 @@ export class Tile {
         this.x = x;
         this.y = y;
         this.length = length;
-        this.dead = Math.random() < 0.4;
+        this.dead = Math.random() < (1 - FILL_RATE);
     }
 
     /**

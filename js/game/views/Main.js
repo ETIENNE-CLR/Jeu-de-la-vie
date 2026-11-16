@@ -1,12 +1,13 @@
 import { screenSize } from "../../game.js";
 import { posInsideGrid } from "../../utils/env.js";
-import { isKeyPressedOnce, KEYS_INPUT } from "../../utils/var.js";
+import { changeFillRate, FILL_RATE, FILL_RATE_BASE, isKeyPressedOnce, } from "../../utils/var.js";
 import { Tile } from "../config/Tile.js";
 import { Vector2 } from "../config/Vector2.js";
+import { LIFE_PATTERNS_KEYS } from "../enums/LifePatterns.js";
 import { AbstractViewScreen } from "./AbstractViewScreen.js";
 
-const RESOLUTION = 340;
-const TIMEOUT_RESET = 125;
+const RESOLUTION = 200;
+const TIMEOUT_RESET = 100;
 let TIMEOUT_MS = TIMEOUT_RESET;
 
 /**
@@ -95,10 +96,23 @@ export class Main extends AbstractViewScreen {
         // Commandes
         if (this.#keysListener()) {
             this.#elapsedTime = 0;
-            // return;
+            return;
         }
 
-        // Parcourir chaque cellule
+        // Générer une nouvelle génération
+        let newGen = this.#nextGeneration();
+        for (let x = 0; x < this.MAX.X; x++) {
+            for (let y = 0; y < this.MAX.Y; y++) {
+                this.#grid[x][y].dead = newGen[x][y];
+            }
+        }
+    }
+
+    /**
+     * Génère une nouvelle génération de vie
+     * @returns {boolean[][]} Nouvelle génération de la grille
+     */
+    #nextGeneration() {
         const nextGrid = [];
         for (let x = 0; x < this.MAX.X; x++) {
             nextGrid[x] = [];
@@ -126,28 +140,23 @@ export class Main extends AbstractViewScreen {
                     }
                 }
 
-                // Ajouter une cellule sur la nouvelle grille
-                nextGrid[x][y] = new Tile(
-                    x * this.TILE_SIZE,
-                    y * this.TILE_SIZE,
-                    this.TILE_SIZE
-                );
-
                 // Règles du jeu de la vie :
                 // Teste d'état en fonction des cellules voisines
-                nextGrid[x][y].dead = cell.dead
+                nextGrid[x][y] = cell.dead
                     /* si la cellule est morte */ ? neighboursCount < 3 || neighboursCount > 3
                     /* si la cellule est vivan */ : neighboursCount < 2 || neighboursCount > 3;
             }
         }
-
-        // Remplacer la grille par la nouvelle génération
-        this.#grid = nextGrid;
+        return nextGrid;
     }
 
+    /**
+     * Fonction qui gère les entrées clavier lors de la simulation
+     * @returns {boolean} si une touche a été préssée
+     */
     #keysListener() {
         let value = 30;
-        
+
         // Modifier la vitesse
         if (isKeyPressedOnce('ArrowLeft')) {
             // Ralentir
@@ -175,6 +184,84 @@ export class Main extends AbstractViewScreen {
             // afficher la vitesse
             console.log(TIMEOUT_MS);
             return true;
+        }
+        if (isKeyPressedOnce('0')) {
+            // Reset le taux de vie
+            changeFillRate(FILL_RATE_BASE);
+            this.#genGrid();
+            return true;
+        }
+        if (isKeyPressedOnce(LIFE_PATTERNS_KEYS.CANON_PLANEURS)) {
+            // Afficher manuellement un canon à planeur
+            changeFillRate(0); // ne pas mettre de cellule vivante
+            this.#genGrid();
+            this.#loadPattern(LIFE_PATTERNS_KEYS.CANON_PLANEURS);
+            return true;
+        }
+    }
+
+    /**
+     * Permet d'afficher une configuration de vie spéciale
+     * @param {string} key Clé constant qui permet de dire quel patterne de vie afficher
+     */
+    #loadPattern(key) {
+        let pattern;
+        let width;
+        let height;
+
+        switch (key) {
+            case LIFE_PATTERNS_KEYS.CANON_PLANEURS:
+                pattern = "24bo11b$22bobo11b$12b2o6b2o12b2o$11bo3bo4b2o12b2o$2o8bo5bo3b2o14b$2o8bo3bob2o4bobo11b$10bo5bo7bo11b$11bo3bo20b$12b2o!";
+                width = 36;
+                height = 9;
+                break;
+
+            default:
+                return;
+        }
+
+        // Vérifier que la grille peut accueillir le pattern
+        if (this.MAX.X < width || this.MAX.Y < height)
+            return;
+
+        // Centrer le pattern
+        const offsetX = Math.floor((this.MAX.X - width) / 3);
+        const offsetY = Math.floor((this.MAX.Y - height) / 3);
+
+        // Décoder le RLE
+        let x = 0;
+        let y = 0;
+        let count = "";
+
+        for (const char of pattern) {
+            if (char >= "0" && char <= "9") {
+                count += char;
+                continue;
+            }
+
+            const run = count === "" ? 1 : Number(count);
+            count = "";
+
+            switch (char) {
+                case "b":
+                    x += run;
+                    break;
+
+                case "o":
+                    for (let i = 0; i < run; i++) {
+                        this.#grid[offsetX + x][offsetY + y].dead = false;
+                        x++;
+                    }
+                    break;
+
+                case "$":
+                    y += run;
+                    x = 0;
+                    break;
+
+                case "!":
+                    return;
+            }
         }
     }
 

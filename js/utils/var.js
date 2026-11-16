@@ -8,6 +8,15 @@
  */
 export const DEBUG_MOD = true;
 
+export const FILL_RATE_BASE = 0.27;
+
+export let FILL_RATE = FILL_RATE_BASE;
+
+
+export function changeFillRate(newValue) {
+    if (newValue < 0 && newValue >= 1) throw new Error(`La nouvelle valeur pour FILL_RATE doit être compris entre 0 et 1 exlus. Valeur en question : ${newValue}`);
+    FILL_RATE = newValue;
+}
 
 /**
  * Tableau contenant toutes les informations concernant la souris
