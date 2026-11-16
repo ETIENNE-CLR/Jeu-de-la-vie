@@ -30,8 +30,7 @@ Chaque cellule possède huit voisines : horizontalement, verticalement et en dia
 | Vivante     | **2 ou 3**        | **Vivante** |
 | Vivante     | 4 à 8             | Morte       |
 
-### **Pourquoi ces règles ?**
-
+### Pourquoi ces règles ?
 On leur donne généralement quatre noms :
 
 1. **Naissance** : une cellule morte avec exactement 3 voisines vivantes devient vivante.
@@ -39,8 +38,19 @@ On leur donne généralement quatre noms :
 3. **Sous-population** : une cellule vivante avec moins de 2 voisines vivantes meurt.
 4. **Surpopulation** : une cellule vivante avec plus de 3 voisines vivantes meurt.
 
-
 Toutes les cellules évoluent simultanément.
+
+## Commandes de la simulation
+| Touches du clavier | Action                                |
+| ------------------ | ------------------------------------- |
+| Espace             | Pause / Jouer                         |
+| Flèche droit       | Ralentir                              |
+| Flèche gauche      | Accélérer                             |
+| Flèche bas         | Réinitialiser la vitesse              |
+| I                  | Afficher la vitesse de génération     |
+| P                  | Afficher le canon à planeurs          |
+| R                  | Reset la génération                   |
+| 0                  | Reset la génération et le taux de vie |
 
 ## Technologies utilisées
 - **JavaScript** : logique du jeu et gestion de la simulation.
@@ -61,9 +71,7 @@ Toutes les cellules évoluent simultanément.
 Le projet utilise JavaScript côté navigateur. Il suffit d'ouvrir le fichier HTML principal avec un serveur local
 
 ## Objectif
-
 Ce projet est réalisé dans un but personnel afin d'expérimenter les automates cellulaires, la programmation JavaScript et le rendu graphique avec Canvas.
 
 ## Références
-
 - [Conway's Game of Life — Wikipedia](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
